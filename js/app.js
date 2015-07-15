@@ -118,10 +118,10 @@ function GoogleMapViewModel() {
   ************************************************************************************/
   self.displayInfoWindow = function(marker) {
     for (var i = 0; i < self.totalResults.length; i++) {
-        if(marker.getPosition()["A"] == self.totalResults[i].geometry.location["A"] && marker.getPosition()["F"] == self.totalResults[i].geometry.location["F"]) {
-          break;
-        }
+      if(marker.getPosition()["A"] == self.totalResults[i].geometry.location["A"] && marker.getPosition()["F"] == self.totalResults[i].geometry.location["F"]) {
+        break;
       }
+    }
     // if yelpResults returns false, display error message  
     if(!self.totalResults[i].yelpResults) {
       infowindow.setContent("Error: Unable to retrieve data from Yelp.");
@@ -184,7 +184,7 @@ function GoogleMapViewModel() {
     self.deleteMarkers();
     //drop markers based on filtered result
     for (var i = 0; i < self.results().length; i++) {
-        self.createMarker(self.results()[i]);
+      self.createMarker(self.results()[i]);
     }
   };
   /************************************************************************************
