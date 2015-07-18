@@ -6,11 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Neighborhood Map: SF Coffee Shop</title>
     <link rel="stylesheet" href="css/style.css">
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
-    <script type="text/javascript" src="js/libs/knockout-3.3.0.js"></script>
-    <script type="text/javascript" src="js/libs/oauth-signature-js-master/dist/oauth-signature.min.js"></script>
-    <script type="text/javascript" src="js/libs/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="js/app.js" defer="defer"></script>
+    <script src="js/libs/jquery-2.1.4.min.js"></script>
+    <script src="js/libs/knockout-3.3.0.js"></script>
+    <script src="js/libs/oauth-signature-js-master/dist/oauth-signature.min.js"></script>
+    <script src="js/app.js" defer="defer"></script>
   </head>
   <body>
     <form class="searchForm-wrapper">
@@ -23,11 +22,11 @@
       <li data-bind="click: $root.selectCoffeeShopFromList($data)">
         <b><span data-bind="text: name"></span></b>
         <br>
-        <span data-bind="text: formatted_address">
+        <span data-bind="text: formatted_address"></span>
       </li>
     </ul>
-    <!-- if query is not matching with any store names, display error message in the list -->
-    <!-- Also check length of totalResults to prevent error message to display brifely before list of coffee shop displays -->
+    <!-- if query is not matching with any store names, display error message in the list.
+         Also check length of totalResults to prevent error message to display brifely before list of coffee shop displays -->
     <div  data-bind="if: results().length == 0 && totalResults.length != 0">
       <ul class="searchedLists">
         <li><b>Error: Could Not find matching coffee shop.</b></li>
@@ -35,4 +34,3 @@
     </div>
   </body>
 </html>
-
