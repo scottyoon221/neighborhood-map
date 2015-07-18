@@ -1,16 +1,34 @@
 function GoogleMapViewModel() {
+  "use strict";
   var self = this;
   var map;
-  var infowindow = new google.maps.InfoWindow({maxWidth: 300});
+  var infowindow;
   var markers = [];
   var marker;
   self.totalResults = [];
   self.results = ko.observableArray([]);
   self.searchQuery = ko.observable("");
   /********************************************************************
+  *   alert internet connection stuatus 
+  ********************************************************************/
+  self.updateOnlineStatus = function(event) {
+    if (navigator.onLine) {
+      console.log(event.type);
+      alert(event.type);
+    } else {
+      console.log(event.type);
+      alert(event.type);
+    }
+  };
+  /********************************************************************
   *   initialize google map to San Francisco with serarch query: coffee
   ********************************************************************/
-  self.initialize = function() {
+  window.initialize = function() {
+    // register listerners to detect whether the browser is online or not
+    window.addEventListener('online',  self.updateOnlineStatus);
+    window.addEventListener('offline', self.updateOnlineStatus);
+
+    infowindow = new google.maps.InfoWindow({maxWidth: 300});
     // set latitude and logitude to locate San Francisco
     var sanFrancisco = new google.maps.LatLng(37.7735093,-122.3997487);
     map = new google.maps.Map(document.getElementById('map-canvas'), {
@@ -34,17 +52,17 @@ function GoogleMapViewModel() {
       // clone initialResults to use it for filter method later
       self.totalResults = initialResults.slice(0);
       // loop over initialResults and transfer data to results then invoke createMarker function
-      for (var i = 0; i < initialResults.length; i++) {
+      for (var i = 0, len = initialResults.length; i < len ; i++) {
         self.results.push(initialResults[i]);
         self.createMarker(self.results()[i]);
-        getYelpInfo(self.results()[i], i);
+        self.getYelpInfo(self.results()[i], i);
       }
     }
   };
   /************************************************************************************
   *  getYelpInfo makes ajax call the Yelp then store response object to totalResults array
   ************************************************************************************/
-  getYelpInfo = function(googleStoreData, totalResultsIndex){
+  self.getYelpInfo = function(googleStoreData, totalResultsIndex){
     function nonce_generate() {
       return (Math.floor(Math.random() * 1e12).toString());
     }
@@ -106,6 +124,9 @@ function GoogleMapViewModel() {
     // when user clicks the marker, it will display info on the map.
     google.maps.event.addListener(marker, 'click', function() {
       var currentMarker = this;
+      //animate move from inital location to marker position
+      map.panTo(currentMarker.getPosition());
+
       currentMarker.setAnimation(google.maps.Animation.BOUNCE);
       //it takes 750ms to animate marker bounce once
       setTimeout(function(){currentMarker.setAnimation(null); }, 750);
@@ -117,7 +138,7 @@ function GoogleMapViewModel() {
   *  create and display marker in the map.
   ************************************************************************************/
   self.displayInfoWindow = function(marker) {
-    for (var i = 0; i < self.totalResults.length; i++) {
+    for (var i = 0, len = self.totalResults.length; i < len; i++) {
       if(marker.getPosition()["A"] == self.totalResults[i].geometry.location["A"] && marker.getPosition()["F"] == self.totalResults[i].geometry.location["F"]) {
         break;
       }
@@ -146,8 +167,8 @@ function GoogleMapViewModel() {
     //anmiate marker bounce
     self.toggleBounce(coffeeShopData);
     //find corresponding marker and pass it to displayInfoWindow as argument
-    for (var i=0; i< markers.length; i++) {
-      if(markers[i].getPosition()["A"] == coffeeShopData.geometry.location["A"] && markers[i].getPosition()["F"] == coffeeShopData.geometry.location["F"]) {
+    for (var i=0, len = markers.length; i< len; i++) {
+      if (markers[i].getPosition()["A"] == coffeeShopData.geometry.location["A"] && markers[i].getPosition()["F"] == coffeeShopData.geometry.location["F"]) {
         self.displayInfoWindow(markers[i]);
         break;
       }
@@ -158,9 +179,9 @@ function GoogleMapViewModel() {
   ************************************************************************************/
   self.toggleBounce = function(coffeeShopData) {
     //loop through given markers on the map 
-    for (var i=0; i< markers.length; i++) {
+    for (var i=0, len = markers.length; i< len; i++) {
       //look for marker that matches latitude and logitude
-      if(markers[i].getPosition()["A"] == coffeeShopData.geometry.location["A"] && markers[i].getPosition()["F"] == coffeeShopData.geometry.location["F"]) {
+      if (markers[i].getPosition()["A"] == coffeeShopData.geometry.location["A"] && markers[i].getPosition()["F"] == coffeeShopData.geometry.location["F"]) {
         //animate marker to bounce
         markers[i].setAnimation(google.maps.Animation.BOUNCE);
         //since we can't add setTimeout function in the loop, we are breaking out of loop and invoking it after.
@@ -183,7 +204,7 @@ function GoogleMapViewModel() {
     //delete all markers
     self.deleteMarkers();
     //drop markers based on filtered result
-    for (var i = 0; i < self.results().length; i++) {
+    for (var i = 0, len = self.results().length; i < len; i++) {
       self.createMarker(self.results()[i]);
     }
   };
@@ -191,13 +212,31 @@ function GoogleMapViewModel() {
   *  delete all markers
   ************************************************************************************/
   self.deleteMarkers = function() {
-    for (var i = 0; i < markers.length; i++) {
+    for (var i = 0, len = markers.length; i < len; i++) {
       markers[i].setMap(null);
     }
     markers = [];
   };
-  // call initialize function upon loading page.
-  google.maps.event.addDomListener(window, 'load', self.initialize);
+  /************************************************************************************
+  *  dynammically add google map api call script tag only if browser is online
+  ************************************************************************************/
+  self.loadScript = function() {
+   // warn user when offline 
+   if (!navigator.onLine) {
+        console.log("Your device is currently not online. Please check your internet connection.");
+        alert("Your device is currently not online. Please check your internet connection then refresh the page.");
+        return;
+    }
+    //call google map api script
+    else {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      document.getElementsByTagName("head")[0].appendChild(script);
+      script.src = "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDiuYSmrpLRXxSnrKs2AeJjwQJRx3uGCtQ&callback=initialize";
+    }
+  };
+  //after page is fully loaded call load script
+  window.onload = self.loadScript;
 }
 
 ko.applyBindings(new GoogleMapViewModel());
