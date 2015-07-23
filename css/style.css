@@ -1,5 +1,10 @@
+/* disable highlighting selected field*/
+*:focus {
+	outline: 0;
+}
+
 html,
-body, 
+body,
 #map-canvas {
 	height: 100%;
 	margin: 0;
@@ -11,31 +16,52 @@ body,
 	padding: 0;
 	height: 100%;
 }
+
+
 /*Search Bar*/
 .searchForm-wrapper {
 	z-index: 100;
 	position: fixed;
-	top: 20px;
-	left: 80px;
-}
-.searchForm-wrapper input{
-	height: 30px;
+	top: 30px;
+	left: 130px;
 }
 
-.searchForm-wrapper .search{
-	font-size: 16px;
-	width: 200px;
+.search {
+	position: relative;
+	left: 8px;
+	padding:8px 15px;
+	background: white;
+	border: 5px solid red;
+	border-radius: 10px 0px 0px 10px;
+	color: black;
+	font-size: 15px;
 }
-.searchForm-wrapper .submit{
-	width: 50px;
+
+.submit {
+	position: relative;
+	padding: 6px 15px;
+	border: 7px solid red;
+	border-radius: 0px 10px 10px 0px;
+	background-color: red;
+	color: #fff;
+	font-size: 15px;
 }
+
+.submit:hover {
+	background-color: #e00;
+	border-color: #e00;
+	color: white;
+}
+
+
 /*Search Lists*/
 .searchedLists {
 	border-style: solid;
 	box-shadow: 10px 10px 5px #888;
 	z-index: 109;
 	position: absolute;
-	max-height:70%;
+	max-height:
+	70%;
 	top: 100px;
 	right: 20px;
 	margin-left: 0;
@@ -43,30 +69,59 @@ body,
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+
 .searchedLists li {
 	width: 300px;
 	height: 80px;
 	padding: 5px;
 	background-color: rgba(255, 0, 0, 0.4);
 }
+
 .searchedLists li:hover {
-	color: #FFF;
+	color: #fff;
 	background-color: rgba(255, 0, 0, 0.5);
 }
+
 /*move search list to the bottom of the screen*/
 @media (max-width: 800px) {
+	.searchForm-wrapper {
+		position: relative;
+		width: 100%;
+		top: 0;
+		left: 0;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
+	.search {
+		left: 0;
+		border-radius: 0;
+		position: relative;
+		width: 90%;
+	}
+
+	.submit {
+		position: absolute;
+		border-radius: 0;
+		width: 70px;
+		right: 0;
+		padding: 6px 0px;
+		border-right: 0;
+		border-left: 0;
+	}
+
 	.searchedLists {
 		width: 100%;
 		height: 30%;
-		top:  70%;
+		top: 70%;
 		right: 0;
 		bottom: 0;
 		background-color: rgba(255, 0, 0, 0.4);
 	}
+
 	.searchedLists li {
 		width: 100%;
 		height: 80px;
-		padding: 5px;
 		list-style-type: none;
 		background-color: transparent;
 	}
