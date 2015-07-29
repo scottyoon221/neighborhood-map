@@ -32,7 +32,7 @@ body,
 	padding:8px 15px;
 	background: white;
 	border: 5px solid red;
-	border-radius: 10px 0px 0px 10px;
+	border-radius: 10px 0 0 10px;
 	color: black;
 	font-size: 15px;
 }
@@ -41,7 +41,7 @@ body,
 	position: relative;
 	padding: 6px 15px;
 	border: 7px solid red;
-	border-radius: 0px 10px 10px 0px;
+	border-radius: 0 10px 10px 0;
 	background-color: red;
 	color: #fff;
 	font-size: 15px;
@@ -96,16 +96,22 @@ body,
 	.search {
 		left: 0;
 		border-radius: 0;
+		-moz-appearance: none;
+		-webkit-appearance: none;
 		position: relative;
+		height: 100%;
 		width: 90%;
 	}
 
 	.submit {
 		position: absolute;
 		border-radius: 0;
+		-moz-appearance: none;
+		-webkit-appearance: none;
 		width: 70px;
 		right: 0;
-		padding: 6px 0px;
+		padding: 6px 0;
+		height: 100%;
 		border-right: 0;
 		border-left: 0;
 	}

@@ -9,7 +9,7 @@ function GoogleMapViewModel() {
   self.results = ko.observableArray([]);
   self.searchQuery = ko.observable("");
   /********************************************************************
-  *   alert internet connection stuatus 
+  *   alert internet connection stuatus
   ********************************************************************/
   self.updateOnlineStatus = function(event) {
     if (navigator.onLine) {
@@ -91,7 +91,7 @@ function GoogleMapViewModel() {
 
     var encodedSignature = oauthSignature.generate("GET",yelp_url, parameters, YELP_KEY_SECRET, YELP_TOKEN_SECRET);
     parameters.oauth_signature = encodedSignature;
-    
+
     var settings = {
       url: yelp_url,
       data: parameters,
@@ -143,10 +143,10 @@ function GoogleMapViewModel() {
         break;
       }
     }
-    // if yelpResults returns false, display error message  
+    // if yelpResults returns false, display error message
     if(!self.totalResults[i].yelpResults) {
       infowindow.setContent("Error: Unable to retrieve data from Yelp.");
-    // else set store info.  
+    // else set store info.
     } else {
       infowindow.setContent("<b>" + self.totalResults[i].yelpResults.businesses[0].name + "</b><br>" +
                             self.totalResults[i].yelpResults.businesses[0].display_phone + "<br>" +
@@ -178,7 +178,7 @@ function GoogleMapViewModel() {
   *  marker bounce animation
   ************************************************************************************/
   self.toggleBounce = function(coffeeShopData) {
-    //loop through given markers on the map 
+    //loop through given markers on the map
     for (var i=0, len = markers.length; i< len; i++) {
       //look for marker that matches latitude and logitude
       if (markers[i].getPosition()["A"] == coffeeShopData.geometry.location["A"] && markers[i].getPosition()["F"] == coffeeShopData.geometry.location["F"]) {
@@ -197,9 +197,11 @@ function GoogleMapViewModel() {
   self.filterList = function() {
     // clone totalResults to results to start with full list of coffee shops
     self.results(self.totalResults.slice(0));
+
     // remove list of coffee shops that does not match with search query
     self.results.remove(function(coffeeShop){
-      return !(coffeeShop.name).toLowerCase().includes(self.searchQuery().toLowerCase());
+      //if there is no match, match function will return null wihch will then return true
+      return (coffeeShop.name).toLowerCase().match(self.searchQuery().toLowerCase())===null;
     });
     //delete all markers
     self.deleteMarkers();
@@ -221,7 +223,7 @@ function GoogleMapViewModel() {
   *  dynammically add google map api call script tag only if browser is online
   ************************************************************************************/
   self.loadScript = function() {
-   // warn user when offline 
+   // warn user when offline
    if (!navigator.onLine) {
         console.log("Your device is currently not online. Please check your internet connection.");
         alert("Your device is currently not online. Please check your internet connection then refresh the page.");
