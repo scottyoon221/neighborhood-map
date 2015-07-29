@@ -9,6 +9,12 @@ function GoogleMapViewModel() {
   self.results = ko.observableArray([]);
   self.searchQuery = ko.observable("");
   /********************************************************************
+  *   remove ', United States string from the address in search list'
+  ********************************************************************/
+  self.removeCountryName = function(fullAddress) {
+    return fullAddress.replace(', United States','');
+  };
+  /********************************************************************
   *   alert internet connection stuatus
   ********************************************************************/
   self.updateOnlineStatus = function(event) {
@@ -28,12 +34,12 @@ function GoogleMapViewModel() {
     window.addEventListener('online',  self.updateOnlineStatus);
     window.addEventListener('offline', self.updateOnlineStatus);
 
-    infowindow = new google.maps.InfoWindow({maxWidth: 300});
+    infowindow = new google.maps.InfoWindow({maxWidth: 170});
     // set latitude and logitude to locate San Francisco
-    var sanFrancisco = new google.maps.LatLng(37.7735093,-122.3997487);
+    var sanFrancisco = new google.maps.LatLng(37.7816639,-122.4267079);
     map = new google.maps.Map(document.getElementById('map-canvas'), {
       center: sanFrancisco,
-      zoom: 13
+      zoom: 14
     });
 
     var request = {
@@ -126,7 +132,6 @@ function GoogleMapViewModel() {
       var currentMarker = this;
       //animate move from inital location to marker position
       map.panTo(currentMarker.getPosition());
-
       currentMarker.setAnimation(google.maps.Animation.BOUNCE);
       //it takes 750ms to animate marker bounce once
       setTimeout(function(){currentMarker.setAnimation(null); }, 750);
@@ -138,8 +143,9 @@ function GoogleMapViewModel() {
   *  create and display marker in the map.
   ************************************************************************************/
   self.displayInfoWindow = function(marker) {
+    console.log(self.totalResults[0].geometry);
     for (var i = 0, len = self.totalResults.length; i < len; i++) {
-      if(marker.getPosition()["A"] == self.totalResults[i].geometry.location["A"] && marker.getPosition()["F"] == self.totalResults[i].geometry.location["F"]) {
+      if(marker.getPosition()["G"] == self.totalResults[i].geometry.location["G"] && marker.getPosition()["K"] == self.totalResults[i].geometry.location["K"]) {
         break;
       }
     }
@@ -148,11 +154,11 @@ function GoogleMapViewModel() {
       infowindow.setContent("Error: Unable to retrieve data from Yelp.");
     // else set store info.
     } else {
-      infowindow.setContent("<b>" + self.totalResults[i].yelpResults.businesses[0].name + "</b><br>" +
-                            self.totalResults[i].yelpResults.businesses[0].display_phone + "<br>" +
+      infowindow.setContent("<div style='font-family: Roboto Condensed, sans-serif; font-size:16px'><b>" + self.totalResults[i].yelpResults.businesses[0].name + "</b></div>" +
+                            "<div style='font-family: Roboto, sans-serif; font-size:12px'>" + self.totalResults[i].yelpResults.businesses[0].display_phone + "<br>" +
                             "<img src=" + self.totalResults[i].yelpResults.businesses[0].rating_img_url + ">" +
                             self.totalResults[i].yelpResults.businesses[0].review_count + " reviews<br>" +
-                            "<img width='150' src=" + self.totalResults[i].yelpResults.businesses[0].image_url + "><br>"+
+                            "<img width='150' src=" + self.totalResults[i].yelpResults.businesses[0].image_url + "></div>"+
                             "<img src='images.png'>");
     }
     // open up info window
@@ -168,7 +174,7 @@ function GoogleMapViewModel() {
     self.toggleBounce(coffeeShopData);
     //find corresponding marker and pass it to displayInfoWindow as argument
     for (var i=0, len = markers.length; i< len; i++) {
-      if (markers[i].getPosition()["A"] == coffeeShopData.geometry.location["A"] && markers[i].getPosition()["F"] == coffeeShopData.geometry.location["F"]) {
+      if (markers[i].getPosition()["G"] == coffeeShopData.geometry.location["G"] && markers[i].getPosition()["K"] == coffeeShopData.geometry.location["K"]) {
         self.displayInfoWindow(markers[i]);
         break;
       }
@@ -181,7 +187,7 @@ function GoogleMapViewModel() {
     //loop through given markers on the map
     for (var i=0, len = markers.length; i< len; i++) {
       //look for marker that matches latitude and logitude
-      if (markers[i].getPosition()["A"] == coffeeShopData.geometry.location["A"] && markers[i].getPosition()["F"] == coffeeShopData.geometry.location["F"]) {
+      if (markers[i].getPosition()["G"] == coffeeShopData.geometry.location["G"] && markers[i].getPosition()["K"] == coffeeShopData.geometry.location["K"]) {
         //animate marker to bounce
         markers[i].setAnimation(google.maps.Animation.BOUNCE);
         //since we can't add setTimeout function in the loop, we are breaking out of loop and invoking it after.
