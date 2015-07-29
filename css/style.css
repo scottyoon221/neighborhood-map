@@ -23,16 +23,17 @@ body,
 	z-index: 100;
 	position: fixed;
 	top: 30px;
-	left: 130px;
+	left: 80px;
 }
 
 .search {
 	position: relative;
 	left: 8px;
+	width: 247px;
 	padding:8px 15px;
 	background: white;
-	border: 5px solid red;
-	border-radius: 10px 0 0 10px;
+	border: 5px solid #c10;
+	border-radius: 0px 0 0 0px;
 	color: black;
 	font-size: 15px;
 }
@@ -40,9 +41,9 @@ body,
 .submit {
 	position: relative;
 	padding: 6px 15px;
-	border: 7px solid red;
-	border-radius: 0 10px 10px 0;
-	background-color: red;
+	border: 7px solid #c10;
+	border-radius: 0 0px 0px 0;
+	background-color: #c10;
 	color: #fff;
 	font-size: 15px;
 }
@@ -56,31 +57,62 @@ body,
 
 /*Search Lists*/
 .searchedLists {
-	border-style: solid;
-	box-shadow: 10px 10px 5px #888;
+	box-shadow: 1px 3px 2px #888;
 	z-index: 109;
 	position: absolute;
-	max-height:
-	70%;
-	top: 100px;
-	right: 20px;
+	max-height: 70%;
+	top: 60px;
+	left: 88px;
 	margin-left: 0;
 	padding-left: 0;
 	overflow-y: auto;
 	overflow-x: hidden;
+	background-color: white;
 }
 
 .searchedLists li {
+	border-top: solid #eee;
+	border-width: thin;
+	margin-left: 10px;
+	margin-right: 25px;
 	width: 300px;
-	height: 80px;
+	height: 50px;
 	padding: 5px;
-	background-color: rgba(255, 0, 0, 0.4);
+	background-color: white;
 }
 
 .searchedLists li:hover {
 	color: #fff;
-	background-color: rgba(255, 0, 0, 0.5);
+	background-color: #f8f8f8;
 }
+
+.store-name {
+	font-family: 'Roboto Condensed', sans-serif;
+	color: #333;
+	font-size: 16px;
+}
+
+.address {
+	font-family: 'Roboto', sans-serif;
+	color: #888;
+	font-size: 12px;
+}
+
+
+/*scrollbar*/
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track-piece  {
+	background-color: white;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+	height: 60px;
+	background-color: #eee;
+}
+
 
 /*move search list to the bottom of the screen*/
 @media (max-width: 800px) {
@@ -120,15 +152,12 @@ body,
 		width: 100%;
 		height: 30%;
 		top: 70%;
-		right: 0;
+		left: 0;
 		bottom: 0;
-		background-color: rgba(255, 0, 0, 0.4);
 	}
 
 	.searchedLists li {
 		width: 100%;
-		height: 80px;
 		list-style-type: none;
-		background-color: transparent;
 	}
 }
