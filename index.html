@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Neighborhood Map: SF Coffee Shop</title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/libs/jquery-2.1.4.min.js"></script>
     <script src="js/libs/knockout-3.3.0.js"></script>
@@ -20,16 +22,16 @@
     <!-- display search result on the list -->
     <ul class="searchedLists" data-bind="foreach: results">
       <li data-bind="click: $root.selectCoffeeShopFromList($data)">
-        <b><span data-bind="text: name"></span></b>
+        <b><span class="store-name" data-bind="text: name"></span></b>
         <br>
-        <span data-bind="text: formatted_address"></span>
+        <span class="address" data-bind="text: $root.removeCountryName(formatted_address)"></span>
       </li>
     </ul>
     <!-- if query is not matching with any store names, display error message in the list.
          Also check length of totalResults to prevent error message to display brifely before list of coffee shop displays -->
     <div  data-bind="if: results().length == 0 && totalResults.length != 0">
       <ul class="searchedLists">
-        <li><b>Error: Could Not find matching coffee shop.</b></li>
+        <li style='font-family:"Roboto Condensed",sans-serif'><b>Error: Could Not find matching coffee shop.</b></li>
       </ul>
     </div>
   </body>
