@@ -145,7 +145,7 @@ function GoogleMapViewModel() {
   self.displayInfoWindow = function(marker) {
     console.log(self.totalResults[0].geometry);
     for (var i = 0, len = self.totalResults.length; i < len; i++) {
-      if(marker.getPosition()["H"] == self.totalResults[i].geometry.location["H"] && marker.getPosition()["L"] == self.totalResults[i].geometry.location["L"]) {
+      if(marker.getPosition()["J"] == self.totalResults[i].geometry.location["J"] && marker.getPosition()["M"] == self.totalResults[i].geometry.location["M"]) {
         break;
       }
     }
@@ -174,7 +174,7 @@ function GoogleMapViewModel() {
     self.toggleBounce(coffeeShopData);
     //find corresponding marker and pass it to displayInfoWindow as argument
     for (var i=0, len = markers.length; i< len; i++) {
-      if (markers[i].getPosition()["H"] == coffeeShopData.geometry.location["H"] && markers[i].getPosition()["L"] == coffeeShopData.geometry.location["L"]) {
+      if (markers[i].getPosition()["J"] == coffeeShopData.geometry.location["J"] && markers[i].getPosition()["M"] == coffeeShopData.geometry.location["M"]) {
         self.displayInfoWindow(markers[i]);
         break;
       }
@@ -187,7 +187,7 @@ function GoogleMapViewModel() {
     //loop through given markers on the map
     for (var i=0, len = markers.length; i< len; i++) {
       //look for marker that matches latitude and logitude
-      if (markers[i].getPosition()["H"] == coffeeShopData.geometry.location["H"] && markers[i].getPosition()["L"] == coffeeShopData.geometry.location["L"]) {
+      if (markers[i].getPosition()["J"] == coffeeShopData.geometry.location["J"] && markers[i].getPosition()["M"] == coffeeShopData.geometry.location["M"]) {
         //animate marker to bounce
         markers[i].setAnimation(google.maps.Animation.BOUNCE);
         //since we can't add setTimeout function in the loop, we are breaking out of loop and invoking it after.
